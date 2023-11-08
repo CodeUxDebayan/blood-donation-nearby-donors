@@ -1,0 +1,44 @@
+.donor-container2 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      margin-left: 90px;
+    }
+   
+ 
+  .donor-details-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-left: var(--dl-space-space-fourunits);
+    border-radius: var(--dl-radius-radius-round);
+}
+ .donor-details{
+  width: 100%;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    
+    justify-content: center;
+    gap: 80px;
+  }
+ .donor-details-sub-heading{
+    width: 60%;
+    text-align: left;
+    margin-left: 20px;
+  }    
+
+  .donor-details1{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    font-size: 20px;
+  }
+
+  .donorName{
+    font-size: 50px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
