@@ -41,7 +41,6 @@ app.post("/api/user/register", async (req, res) => {
       name,
       email,
       password,
-      number
     } = req.body;
     // Check if the email is already registered
     const existingUser = await User.findOne({
@@ -57,7 +56,7 @@ app.post("/api/user/register", async (req, res) => {
       name: name,
       email: email,
       password: password,
-      number: number,
+      
     });
     await user.save();
     res.status(201).json(user);
@@ -237,7 +236,6 @@ app.post("/api/events/request-donation", async (req, res) => {
       name: name,
       description: description,
       date: date,
-      duration: duration,
       address: address,
       quantity: quantity,
     });
@@ -249,6 +247,18 @@ app.post("/api/events/request-donation", async (req, res) => {
     });
   }
 });
+
+app.get("/api/events/request-donation", async (req, res) => {
+  try {
+    const requestedEvents = await RequestedDonation.find();
+    res.status(200).json(requestedEvents);
+  } catch (error) {
+    res.status(500).json({
+      error: "Could not retrieve requested events",
+    });
+  }
+})
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -297,12 +307,10 @@ app.get("/api/events", async (req, res) => {
 
 app.get("/api/nearbyDonor", async (req, res) => {
   const { latitude, longitude } = req.query;
-
-
-
   console.log(req.query);
   if( latitude && longitude )
-  {const donors = await Donor.aggregate([
+  {
+    const donors = await Donor.aggregate([
     {
       $geoNear: {
         near: {

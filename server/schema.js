@@ -14,11 +14,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  number: {
-    type: String,
-    required: true,
-    unique: true,
-  },
 });
 
 export const User = mongoose.model("User", userSchema);
@@ -74,10 +69,6 @@ const RequestedDonationSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    type: String,
-    required: true,
-  },
-  duration: {
     type: String,
     required: true,
   },

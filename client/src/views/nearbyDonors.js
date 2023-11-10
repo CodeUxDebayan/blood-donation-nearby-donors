@@ -6,7 +6,8 @@ import axios from 'axios';
 
 export default function NearbyDonors() {
   const [donors, setDonors] = useState([]);
-  const [name, setName] = useState('');
+ 
+  const [updatedDonors, setUpdatedDonors] = useState([]);
   // Get the user's location using the browser's geolocation API
   useEffect(() => {
     if (navigator.geolocation) {
@@ -37,24 +38,41 @@ export default function NearbyDonors() {
   }, []);
   
   useEffect(() => {
-    // Function to fetch the user's name
-    const fetchUserName = async (userId) => {
-      try {
-        const userResponse = await axios.get(`http://localhost:3000/api/user/dashboard/${userId}`);
-        setName(userResponse.data.user.name);
-        console.log(userResponse.data.user.name);
-      } catch (error) {
-        console.error('Error fetching user name:', error);
-        // Handle the error as needed
+    const fetchUserNames = async () => {
+      const updatedDonors = [];
+  
+      for (let i = 0; i < donors.length; i++) {
+        const userId = donors[i].user;
+  
+        try {
+          const userResponse = await axios.get(`http://localhost:3000/api/user/dashboard/${userId}`);
+          
+          // Destructure user name from the response
+          const { name } = userResponse.data.user;
+  
+          // Add the user name to the donor object
+          const updatedDonor = {
+            ...donors[i],  // Spread existing donor properties
+            userName: name, // Add the userName property
+          };
+  
+          updatedDonors.push(updatedDonor);
+        } catch (error) {
+          console.error('Error fetching user name:', error);
+          // Handle the error as needed
+        }
       }
+  
+      // Update the state with the modified donors array
+      setUpdatedDonors(updatedDonors);
     };
-
-    // Ensure that the user ID is available before fetching the user's name
+  
+    // Fetch user names only if there are donors
     if (donors.length > 0) {
-      const userId = donors[0].user; // Assuming you want to fetch the user for the first donor
-      fetchUserName(userId);
+      fetchUserNames();
     }
   }, [donors]);
+  
 
         
 
@@ -75,11 +93,12 @@ export default function NearbyDonors() {
           </span>
           <div data-thq="thq-navbar-nav" className="home-desktop-menu">
             <nav className="home-links">
-              <span>Home</span>
+              <a href="/"><span>Home</span></a>
               <span className="home-nav2">Nearby Donors</span>
               <span className="home-nav3">Login</span>
               <span className="home-nav4">Signup</span>
               <span className="home-nav5">Become a Donor</span>
+              <a href="/request"><span className="home-nav5">Request Donation</span></a>
             </nav>
             <div className="home-buttons">
               <button className="home-login button">Login</button>
@@ -136,8 +155,16 @@ export default function NearbyDonors() {
           </div>
         </div>
       </div>
+      <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}} className="donorName">
+        <a  href="/request">
+      <div className="home-button button">
+        Request
+      </div>
+      </a>
+      </div>
+     
       {/* HERE */}
-      {donors.map((donor) =>(<div className="home-details">
+      {updatedDonors.map((donor) =>(<div className="home-details">
         <div className="home-details1">
           <div key={donor.id} className="donor-container2"> 
           <img
@@ -147,14 +174,16 @@ export default function NearbyDonors() {
           />
            <div className="donor-details1"> 
            <div className="donor-details">
-              <div className="donorName">
-              {name}
-            </div>
+             
+                <div className="donorName">
+                  {donor.userName}
+                  </div>
+              
+            
            <h2 className="home-details-heading heading2" >
               {donor.bloodType}
             </h2>
             <h2 className="home-details-heading heading2">{Math.round(donor.distance / 1000) }Km</h2>
-            
             </div>
             <span className="donor-details-sub-heading">{donor.medicalHistory}</span>
             </div>

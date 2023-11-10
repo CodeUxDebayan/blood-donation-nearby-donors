@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { Helmet } from 'react-helmet'
-
+import axios from 'axios'
 import FeatureCard from '../components/feature-card'
 import GalleryCard3 from '../components/gallery-card3'
 import './home.css'
 import {Link} from "react-router-dom";
 const Home = (props) => {
+   
+  const [requests, setRequests] = useState([]);
+  
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/events/request-donation")
+      .then((response) => {
+        setRequests(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  })
+
+ const tk = localStorage.getItem("token");
+
   return (
     <div className="home-container">
       <Helmet>
@@ -15,22 +31,25 @@ const Home = (props) => {
       </Helmet>
       <div className="home-header">
         <header data-thq="thq-navbar" className="home-navbar-interactive">
-          <span className="home-logo">
-            <span className="home-text">DonatE</span>
+         <Link to="/"> 
+         <span className="home-logo">
+            <span className="home-text">Donate</span>
             <br className="home-text01"></br>
             <span className="home-text02">Life</span>
             <br className="home-text03"></br>
           </span>
+          </Link>
           <div data-thq="thq-navbar-nav" className="home-desktop-menu">
-            <nav className="home-links">
+            <nav  className="home-links">
               <span>Home</span>
-              <Link to="/nearbyDonors"><span className="home-nav2">Nearby Donors</span></Link>
-              
+              <Link to="/nearby-donors"><span className="home-nav2">Nearby Donors</span></Link>
               <span className="home-nav5">Become a Donor</span>
+              <a href="/request"><span className="home-nav5">Request Donation</span></a>
             </nav>
             <div className="home-buttons">
-              <button className="home-login button">Login</button>
-              <button className="home-register button">Register</button>
+              {!tk ? <button className="home-login button"><a href="/login">Login</a></button> : (<><button className="home-login button"><a href="/logout">Logout</a></button>
+              <button className="home-login button"><a href="/dashboard">Profile</a></button></>)}
+              
             </div>
           </div>
           <div data-thq="thq-burger-menu" className="home-burger-menu">
@@ -113,6 +132,31 @@ const Home = (props) => {
           />
         </div>
       </div>
+      <div className="home-details1">
+          <div className="home-container2">
+            <span className="home-text04 sectionTitle">
+              <span>Donations</span>
+              <br></br>
+            </span>
+            <h2 className="home-details-heading heading2">
+              Requested Donations
+            </h2>
+            {requests?.map((request) =>(
+            <><span className="home-details-sub-heading">
+              <h2>{request.name}</h2>
+              <br/>
+              {request.description}
+              <br/>
+              {request.date}
+              <br/>
+              {request.address}
+              <br/>
+              {request.quantity}
+            </span>
+            </>
+            ))}
+          </div>
+        </div>
       <div className="home-features">
         <div className="home-features-container">
           <div className="home-features1">
