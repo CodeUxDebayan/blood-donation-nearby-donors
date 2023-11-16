@@ -90,6 +90,9 @@
 .home-nav1:hover {
   color: #3d6e70ff;
 }
+.home-nav1 span:hover{
+  cursor: pointer;
+}
 .home-nav2 {
   transition: 0.3s;
   margin-left: var(--dl-space-space-twounits);
@@ -596,6 +599,10 @@
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
+}
+.home-container6 span:hover {
+  cursor: pointer;
+
 }
 .home-logo2 {
   color: var(--dl-color-gray-white);

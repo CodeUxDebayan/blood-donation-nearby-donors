@@ -4,7 +4,7 @@ import "./req.css"
 import { useHistory } from 'react-router-dom';
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-
+  const history = useHistory();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -16,17 +16,14 @@ const LoginForm = () => {
       // Replace 'your_api_endpoint' with your actual API endpoint
       const response = await axios.post('http://localhost:3000/api/user/login', formData);
 
-      // Assuming the API returns a token in the response
-      const { token } = response.data.id;
-
-      // Set the token in your state or context (replace setTokenFunction with your actual setter)
-     localStorage.setItem('token', token);
-
-      // Optionally, you can redirect the user to another page after successful login
-      history.push('/dashboard');
+     
+    const  token  = response.data.user._id;
+    console.log(token);
+     
+    localStorage.setItem('token', token);
+    history.push('/');
     } catch (error) {
       console.error('Login failed:', error);
-      // Handle login failure, show error messages, etc.
     }
   };
 

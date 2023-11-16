@@ -97,6 +97,7 @@ app.post("/api/user/login", async (req, res) => {
         error: "Incorrect password",
       });
     }
+    console.log(user.id);
   } catch (error) {
     res.status(500).json({
       error: "Login failed",
@@ -182,23 +183,25 @@ app.get("/api/donors", async (req, res) => {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.post("/api/user/becomeDonor/:id", async (req, res) => {
   try {
-    const userId = req.params.id; // Assuming you have user authentication and can retrieve the user's ID
+    const userId = req.params.id; 
+    
     const {
       bloodType,
       address,
       medicalHistory,
-      location
+      latitude,
+      longitude
     } = req.body;
     // Check if the user is already a donor
     const existingDonor = await Donor.findOne({
       user: userId,
     });
+    
     if (existingDonor) {
       return res.status(400).json({
         error: "User is already a donor.",
       });
     }
-    const [latitude, longitude] = location.split(",").map(parseFloat);
     // Create a new donor record associated with the user
     const newDonor = new Donor({
       user: userId,
@@ -210,6 +213,7 @@ app.post("/api/user/becomeDonor/:id", async (req, res) => {
         coordinates: [longitude, latitude],
       },
     });
+    console.log(newDonor);
     await newDonor.save();
     res.status(201).json(newDonor);
   } catch (error) {

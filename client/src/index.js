@@ -13,6 +13,8 @@ import NotFound from './views/not-found'
 import  NearbyDonors  from './views/nearbyDonors'
 import DonationRequestForm from './views/DonationRequestForm'
 import Login from './views/login'
+import Signup from './views/signup'
+import becomeDonor from './views/becomeDonor'
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
         <Route component={NearbyDonors} path="/nearby-donors" />
         <Route component={DonationRequestForm} path="/request" />
         <Route component={Login} path="/login" />
+        <Route component={Signup} path="/signup" />
+        <Route component={becomeDonor} path="/become-donor" />
         <Route component={NotFound} path="**" />
         
         <Redirect to="**" />
