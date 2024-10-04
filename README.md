@@ -1,0 +1,1 @@
+A nearby blood donor finding application, using  mongodb's geolocator coordinates mapping query. User's can signup, and signup to be a donor and allow his location permissions. Anyone can search nearby donors and get necessary emergency details.
